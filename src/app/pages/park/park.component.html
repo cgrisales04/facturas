@@ -1,0 +1,136 @@
+<div class="row m-2 mt-5">
+
+    <div class="col-md-6 p-5" style="box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; border-radius: 10px;">
+        <h4 class="mb-5">Formulario de Facturas</h4>
+        <form [formGroup]="form_park" (ngSubmit)="swhicheAccion()">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="txtNumero" class="form-label">Numero factura:</label>
+                    <input type="text" formControlName="numero" class="form-control" id="txtNumero">
+                    <div *ngIf="isValid('numero')" class="form-text text-danger">
+                        Numero de factura es obligatorio
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="txtFecha" class="form-label">Fecha factura:</label>
+                    <input type="date" formControlName="fecha" class="form-control" id="txtFecha">
+                    <div *ngIf="isValid('fecha')" class="form-text text-danger">
+                        La fecha de la factura es obligatorio
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="txtValorNeto" class="form-label">Valor neto:</label>
+                    <input type="number" formControlName="valor_neto" class="form-control" id="txtValorNeto">
+                    <div *ngIf="isValid('valor_neto')" class="form-text text-danger">
+                        Valor neto es obligatorio
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="txtValorIva" class="form-label">Valor iva:</label>
+                    <input type="number" formControlName="valor_iva" class="form-control" id="txtValorIva">
+                    <div *ngIf="isValid('valor_iva')" class="form-text text-danger">
+                        Valor iva es obligatorio
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="txtValorTotal" class="form-label">Valor total:</label>
+                <input type="number" formControlName="valor_total" class="form-control" id="txtValorTotal">
+                <div *ngIf="isValid('valor_total')" class="form-text text-danger">
+                    Valor iva es obligatorio
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="txtActivo" class="form-label">Activos:</label><br>
+                    <select class="form-select" formControlName="id_activo">
+                        <option value="0" disabled selected>Activos</option>
+                        <option *ngFor="let activo of this._activos" [value]="activo.id_activo">
+                            {{activo.descripcion}}</option>
+                    </select>
+                    <div *ngIf="isValid('id_activo')" class="form-text text-danger">
+                        Proveedor es requerido
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="txtProveedor" class="form-label">Proveedores:</label><br>
+                    <select class="form-select" formControlName="id_proveedor">
+                        <option value="0" disabled selected>Proveedor</option>
+                        <option *ngFor="let proveedor of this._proveedores" [value]="proveedor.id_proveedor">
+                            {{proveedor.nombre}}</option>
+                    </select>
+                    <div *ngIf="isValid('id_proveedor')" class="form-text text-danger">
+                        Proveedor es requerido
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="txtEtapa" class="form-label">Etapas:</label><br>
+                    <select class="form-select" formControlName="id_etapa">
+                        <option value="0" disabled selected>Etapa</option>
+                        <option *ngFor="let etapa of this._etapas" [value]="etapa.id_etapa">
+                            {{etapa.nombre}}</option>
+                    </select>
+                    <div *ngIf="isValid('id_etapa')" class="form-text text-danger">
+                        Etapa es requerida
+                    </div>
+                </div>
+                <div class="mb-3 col-md-6">
+                    <label for="txtGasto" class="form-label">Gasto:</label><br>
+                    <select class="form-select" formControlName="id_gasto">
+                        <option value="0" disabled selected>Gasto</option>
+                        <option *ngFor="let gasto of this._gastos" [value]="gasto.id_gasto">
+                            {{gasto.detalle_gasto}}</option>
+                    </select>
+                    <div *ngIf="isValid('id_gasto')" class="form-text text-danger">
+                        Gasto es requerido
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success me-2"
+                    [disabled]="form_park.invalid">{{this.accion}}</button>
+                <span class="btn btn-danger" (click)="cancelar()">Cancelar</span>
+
+            </div>
+        </form>
+
+    </div>
+    <div class="col-md-6">
+        <table class="table table-striped table-hover table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Numero</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Valor Neto</th>
+                    <th scope="col">Iva</th>
+                    <th scope="col">Valor Total</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let factura of this._facturas">
+                    <th scope="row">{{factura.id_factura}}</th>
+                    <th scope="row">{{factura.numero}}</th>
+                    <th scope="row">{{factura.fecha}}</th>
+                    <th scope="row">{{factura.valor_neto}}</th>
+                    <th scope="row">{{factura.valor_iva}}</th>
+                    <th scope="row">{{factura.valor_total}}</th>
+                    <th scope="row">
+                        <i class="fa-solid fa-pen me-3" style="cursor: pointer"
+                            (click)="selectPark(factura.id_factura)"></i>
+                        <i class="fa-solid fa-trash" style="cursor: pointer"
+                            (click)="deletePark(factura.id_factura)"></i>
+                    </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
